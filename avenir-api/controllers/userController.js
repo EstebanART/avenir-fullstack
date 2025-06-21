@@ -22,7 +22,35 @@ const registerUser = async (req, res) => {
         password: hashedPassword,
     });
 
-    res.status(201).json({message: ' usuario registrado', userId: user._id }
+    res.status(201).json({message: ' usuario registrado', userId: user._id });
+    } catch (error) { 
+        res.status(500).json({ message: 'error del servidor' });
+    }    
     
-    )
 }
+;
+
+//login
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({ message: 'usuario no encontrado'});
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ message: 'contraseña incorrecta'});
+        }
+
+        res.json({ message: 'login exitoso', userId: user._id });
+    } catch (error) {
+        res.status(500).json({ message: 'error del servidor'});
+    }
+};
+
+module.exports = { registerUser, loginUser };

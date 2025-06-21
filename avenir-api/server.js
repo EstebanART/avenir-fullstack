@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 require('dotenv').config();
+const productRoutes = require('./routes/productRoutes');
+
 
 const userRoutes = require('./routes/userRoutes');
 
@@ -27,3 +29,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor backend escuchando en http://localhost:${PORT}`);
 });
+
+app.use('/api/products', productRoutes);
