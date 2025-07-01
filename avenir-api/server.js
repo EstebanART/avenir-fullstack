@@ -15,7 +15,9 @@ connectDB();
 
 
 // MiddLeware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173' // puerto de Vite por defecto
+}));
 app.use(express.json());
 
 //rutas
