@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 require('dotenv').config();
-const productRoutes = require('./routes/productRoutes');
-
 
 const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +22,8 @@ app.use(express.json());
 
 //rutas
 app.use('/api/users', userRoutes);
+app.use('/api/productos', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // ruta de prueba
 app.get('/', (req, res) => {
