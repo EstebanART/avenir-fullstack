@@ -5,7 +5,9 @@ const jwt = require('jsonwebtoken');
 
 //generar token
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+         expiresIn: '7d' 
+        });
 };
 
 //registro
@@ -60,4 +62,7 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser };
+module.exports = { 
+    registerUser, 
+    loginUser 
+};
