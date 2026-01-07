@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
     
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
         name,
@@ -32,9 +32,11 @@ const registerUser = async (req, res) => {
     });
 
     res.status(201).json({message: ' usuario registrado', userId: user._id });
-    } catch (error) { 
-        res.status(500).json({ message: 'error del servidor' });
-    }    
+    } catch (error) {
+    console.error("ERROR EN REGISTER:", error);
+    res.status(500).json({ message: 'error del servidor', error: error.message });
+}
+
     
 }
 ;
@@ -66,8 +68,10 @@ const loginUser = async (req, res) => {
             token: generateToken(user._id)
         });
     } catch (error) {
-        res.status(500).json({ message: 'error del servidor'});
-    }
+    console.error("ERROR EN LOGIN:", error);
+    res.status(500).json({ message: 'error del servidor', error: error.message });
+}
+
 };
 
 module.exports = { 

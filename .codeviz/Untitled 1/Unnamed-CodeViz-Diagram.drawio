@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <mxfile host="codeviz.app" modified="2025-12-28T16:34:14.548Z" agent="CodeViz Exporter" version="14.6.5" type="device">
+          <diagram id="codeviz-diagram" name="System Diagram">
+            <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+              <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="node-1766939648788" value="" style="html=1;whiteSpace=wrap;container=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;fillOpacity=20;strokeWidth=2;containerType=none;recursiveResize=0;movable=1;resizable=1;autosize=0;dropTarget=0" vertex="1" parent="temp-wrapper-719e165b-33bc-45db-87a1-0d209b86b9b2">
+                  <mxGeometry x="12.833607907743001" y="126.93327841845141" width="190" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="node-1766939648788_label" value="New Node" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;labelBackgroundColor=white;spacing=5" vertex="1" parent="temp-wrapper-719e165b-33bc-45db-87a1-0d209b86b9b2">
+                  <mxGeometry x="20.833607907743" y="134.9332784184514" width="114" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="temp-wrapper-719e165b-33bc-45db-87a1-0d209b86b9b2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5" vertex="1" parent="1">
+                      <mxGeometry x="0" y="0" width="120" height="60" as="geometry"/>
+                    </mxCell>
+                
+              </root>
+            </mxGraphModel>
+          </diagram>
+        </mxfile>
