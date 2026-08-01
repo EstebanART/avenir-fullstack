@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,20 +16,13 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await api.post('/users/login', { email, password });
-      const { token } = response.data;
-
-      if (token) {
-        localStorage.setItem('token', token);
-        navigate('/');
-      } else {
-        setError('No se recibió token de autenticación');
-      }
+      await api.post('/users/register', { name, email, password });
+      navigate('/login');
     } catch (err: any) {
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
-        setError('Error al iniciar sesión');
+        setError('Error al registrarse');
       }
     } finally {
       setLoading(false);
@@ -37,8 +31,20 @@ const Login = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto', padding: '1rem' }}>
-      <h2>Login</h2>
+      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="name">Nombre</label>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+            style={{ width: '100%', padding: '0.5rem', marginTop: '0.25rem' }}
+          />
+        </div>
+
         <div style={{ marginBottom: '1rem' }}>
           <label htmlFor="email">Email</label>
           <input
@@ -66,15 +72,15 @@ const Login = () => {
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
         <button type="submit" disabled={loading}>
-          {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+          {loading ? 'Registrando...' : 'Registrarse'}
         </button>
       </form>
 
       <p style={{ marginTop: '1rem' }}>
-        ¿No tienes cuenta? <Link to="/register">Registrarse</Link>
+        ¿Ya tienes cuenta? <Link to="/login">Iniciar sesión</Link>
       </p>
     </div>
   );
 };
 
-export default Login;
+export default Register;
