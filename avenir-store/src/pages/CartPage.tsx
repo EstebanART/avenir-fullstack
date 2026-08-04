@@ -3,6 +3,9 @@ import { useCart } from '../context/CartContext';
 const CartPage = () => {
     const { state, dispatch } = useCart();
 
+    console.log('STATE LEÍDO POR CARTPAGE', state.items);
+    console.log('LONGITUD DEL CARRITO', state.items.length);
+
     const total = state.items.reduce(
         (acc, item) => acc + item.price * item.quantity,
         0

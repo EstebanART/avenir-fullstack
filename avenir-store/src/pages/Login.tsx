@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import api from '../services/api';
+import api, { setAuthToken } from '../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Login = () => {
       const { token } = response.data;
 
       if (token) {
-        localStorage.setItem('token', token);
+        setAuthToken(token);
         navigate('/');
       } else {
         setError('No se recibió token de autenticación');
@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto', padding: '1rem' }}>
-      <h2>Login</h2>
+      <h2>Iniciar sesion</h2>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '1rem' }}>
           <label htmlFor="email">Email</label>

@@ -23,6 +23,12 @@ const initialState: CartState = {
 //reducer
 
 const CartReducer = (state: CartState, action: CartAction): CartState => {
+    console.log('ACTION', action);
+    console.log('ACTION RECIBIDA EN REDUCER', {
+        type: action.type,
+        stateItemsBefore: state.items
+    });
+
     switch (action.type) {
         case 'ADD_TO_CART': 
         {
@@ -30,25 +36,32 @@ const CartReducer = (state: CartState, action: CartAction): CartState => {
                 item => item._id === action.payload._id
             );
 
-            if (exists) {
-                return {
+            console.log('ADD_TO_CART - EXISTE?', Boolean(exists), exists);
+
+            const nextState = exists
+                ? {
                     items: state.items.map(item =>
                         item._id === action.payload._id
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                     )
+                }
+                : {
+                    items: [...state.items, { ...action.payload, quantity: 1 }]
                 };
-            }
 
-            return {
-                items: [...state.items, { ...action.payload, quantity: 1 }]
-            };
+            console.log('ADD_TO_CART - NUEVO ESTADO', nextState);
+            return nextState;
         }
 
-        case 'REMOVE_FROM_CART':
-            return {
+        case 'REMOVE_FROM_CART': {
+            console.log('REMOVE_FROM_CART - STATE ANTES', state.items);
+            const nextState = {
                 items: state.items.filter(item => item._id !== action.payload)
             };
+            console.log('REMOVE_FROM_CART - STATE DESPUÉS', nextState.items);
+            return nextState;
+        }
 
         case 'CLEAR_CART':
             return initialState;
@@ -69,7 +82,9 @@ const CartContext = createContext<{
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [state, dispatch] = useReducer(CartReducer, initialState);
-console.log('CART STATE:', state.items);
+    console.log("Estado del carrito:", state);
+    console.log('CART STATE:', state.items);
+    console.log('STATE DEL PROVIDER', state.items);
     return (
         <CartContext.Provider value={{ state, dispatch }}>
             {children}

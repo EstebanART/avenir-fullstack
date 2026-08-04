@@ -5,6 +5,8 @@ import App from './App';
 import { CartProvider } from './context/CartContext';
 
 
+console.log('APP MONTADA');
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>

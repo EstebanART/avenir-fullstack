@@ -9,6 +9,16 @@ const ProductCard = ({ product }: Props) => {
     const { dispatch } = useCart();
 
     const handleAddToCart = () => {
+        console.log('CLICK EN AGREGAR', product);
+        console.log('ANTES DEL DISPATCH', {
+            type: 'ADD_TO_CART',
+            payload: {
+                _id: product._id,
+                name: product.name,
+                price: product.price,
+                quantity: 1
+            }
+        });
         
         dispatch({
             type: 'ADD_TO_CART',
@@ -19,6 +29,7 @@ const ProductCard = ({ product }: Props) => {
                 quantity: 1
             }
         });
+        console.log('DESPUÉS DEL DISPATCH');
     };
 
 

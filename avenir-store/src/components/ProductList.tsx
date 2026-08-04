@@ -10,6 +10,7 @@ import type { Product } from '../types/Product';
 
 const ProductList = () => {
     const [products, setProducts] = useState<Product[]>([]);
+    console.log('PRODUCTLIST RENDER', products.length);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
