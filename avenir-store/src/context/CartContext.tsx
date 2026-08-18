@@ -106,6 +106,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     console.log("Estado del carrito:", state);
     console.log('CART STATE:', state.items);
     console.log('STATE DEL PROVIDER', state.items);
+    console.log('PROVIDER RENDER - ITEMS:', state.items);
 
     useEffect(() => {
         try {
