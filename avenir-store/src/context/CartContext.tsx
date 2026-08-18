@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 /* ====== TIPOS ===== */
@@ -18,6 +18,27 @@ type CartAction =
 
 const initialState: CartState = {
     items: []
+};
+
+// carga inicial desde localStorage (lazy initializer)
+const getInitialState = (): CartState => {
+    try {
+        const stored = localStorage.getItem('cart');
+
+        if (!stored) {
+            return initialState;
+        }
+
+        const parsed = JSON.parse(stored);
+
+        if (Array.isArray(parsed)) {
+            return { items: parsed };
+        }
+
+        return initialState;
+    } catch {
+        return initialState;
+    }
 };
 
 //reducer
@@ -81,10 +102,19 @@ const CartContext = createContext<{
 //provider
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-    const [state, dispatch] = useReducer(CartReducer, initialState);
+    const [state, dispatch] = useReducer(CartReducer, undefined, getInitialState);
     console.log("Estado del carrito:", state);
     console.log('CART STATE:', state.items);
     console.log('STATE DEL PROVIDER', state.items);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('cart', JSON.stringify(state.items));
+        } catch (e) {
+            // ignore write errors
+        }
+    }, [state.items]);
+
     return (
         <CartContext.Provider value={{ state, dispatch }}>
             {children}
