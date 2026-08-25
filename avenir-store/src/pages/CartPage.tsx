@@ -35,6 +35,29 @@ const CartPage = () => {
                         <p>
                             ${item.price} x {item.quantity}
                         </p>
+                        <div>
+                            <button
+                                onClick={() =>
+                                    dispatch({
+                                        type: 'DECREASE_QUANTITY',
+                                        payload: item._id
+                                    })
+                                }
+                            >
+                                −
+                            </button>
+                            <span> {item.quantity} </span>
+                            <button
+                                onClick={() =>
+                                    dispatch({
+                                        type: 'INCREASE_QUANTITY',
+                                        payload: item._id
+                                    })
+                                }
+                            >
+                                +
+                            </button>
+                        </div>
                     </div>
 
                     <button 

@@ -12,6 +12,8 @@ interface CartState {
 type CartAction =
 | { type: 'ADD_TO_CART'; payload: CartItem }
 | { type: 'REMOVE_FROM_CART'; payload: string }
+| { type: 'INCREASE_QUANTITY'; payload: string }
+| { type: 'DECREASE_QUANTITY'; payload: string }
 | { type: 'CLEAR_CART' };
 
 //estado inicial
@@ -82,6 +84,42 @@ const CartReducer = (state: CartState, action: CartAction): CartState => {
             };
             console.log('REMOVE_FROM_CART - STATE DESPUÉS', nextState.items);
             return nextState;
+        }
+
+        case 'INCREASE_QUANTITY': {
+            const exists = state.items.find(item => item._id === action.payload);
+
+            if (!exists) {
+                return state;
+            }
+
+            return {
+                items: state.items.map(item =>
+                    item._id === action.payload
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                )
+            };
+        }
+
+        case 'DECREASE_QUANTITY': {
+            const exists = state.items.find(item => item._id === action.payload);
+
+            if (!exists) {
+                return state;
+            }
+
+            return exists.quantity > 1
+                ? {
+                    items: state.items.map(item =>
+                        item._id === action.payload
+                            ? { ...item, quantity: item.quantity - 1 }
+                            : item
+                    )
+                }
+                : {
+                    items: state.items.filter(item => item._id !== action.payload)
+                };
         }
 
         case 'CLEAR_CART':
