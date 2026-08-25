@@ -1,5 +1,6 @@
 import type { Product } from '../types/Product';
 import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 
 interface Props {
     product: Product;
@@ -42,20 +43,22 @@ const ProductCard = ({ product }: Props) => {
             textAlign: 'center'
         }}
         >
-        {/* Imagen */}
-        {product.images?.[0] && (
-            <img
-            src={product.images[0]}
-            alt={product.name}
-            style={{ width: '100%', height: '200px', objectFit: 'cover' }}
-            />
-        )}
+        <Link to={`/product/${product._id}`}>
+            {/* Imagen */}
+            {product.images?.[0] && (
+                <img
+                src={product.images[0]}
+                alt={product.name}
+                style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+                />
+            )}
 
-        {/* Nombre */}
-        <h3>{product.name}</h3>
+            {/* Nombre */}
+            <h3>{product.name}</h3>
 
-        {/* Precio */}
-        <p>${product.price}</p>
+            {/* Precio */}
+            <p>${product.price}</p>
+        </Link>
 
         {/* Stock */}
         {product.stock > 0 ? (
