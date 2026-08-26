@@ -1,18 +1,48 @@
 const Order = require('../models/orderModel');
+const Product = require('../models/productModel');
 
 // crear pedido
 const createOrder = async (req, res) => {
     try {
-        const { products, total } = req.body;
+        const { products } = req.body || {};
 
-        if (!products || products.length === 0) {
+        if (!Array.isArray(products) || products.length === 0) {
             return res.status(400).json({ message: 'no hay productos en el pedido'});
+        }
+
+        const processedProducts = [];
+        let total = 0;
+
+        for (const item of products) {
+            const { product: productId, quantity } = item || {};
+
+            if (!productId || !Number.isInteger(quantity) || quantity <= 0) {
+                return res.status(400).json({ message: 'producto o cantidad inválida' });
+            }
+
+            const product = await Product.findById(productId);
+
+            if (!product) {
+                return res.status(404).json({ message: 'producto no encontrado' });
+            }
+
+            if (product.stock < quantity) {
+                return res.status(400).json({ message: 'stock insuficiente' });
+            }
+
+            processedProducts.push({
+                product: product._id,
+                name: product.name,
+                price: product.price,
+                quantity
+            });
+            total += product.price * quantity;
         }
 
         const order = await Order.create({
             user: req.user._id,
-            products,
-            total 
+            products: processedProducts,
+            total
         });
 
         res.status(201).json(order);
