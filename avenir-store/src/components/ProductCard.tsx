@@ -17,7 +17,8 @@ const ProductCard = ({ product }: Props) => {
                 _id: product._id,
                 name: product.name,
                 price: product.price,
-                quantity: 1
+                quantity: 1,
+                images: product.images
             }
         });
         
@@ -27,7 +28,8 @@ const ProductCard = ({ product }: Props) => {
                 _id: product._id,
                 name: product.name,
                 price: product.price,
-                quantity: 1
+                quantity: 1,
+                images: product.images
             }
         });
         console.log('DESPUÉS DEL DISPATCH');

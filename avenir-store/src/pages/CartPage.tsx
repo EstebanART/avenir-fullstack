@@ -30,6 +30,13 @@ const CartPage = () => {
                     paddingBottom: '0.5rem'
                    }}
                    >
+                    {item.images?.[0] && (
+                        <img
+                            src={item.images[0]}
+                            alt={item.name}
+                            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                        />
+                    )}
                     <div>
                         <strong>{item.name}</strong>
                         <p>
@@ -58,6 +65,7 @@ const CartPage = () => {
                                 +
                             </button>
                         </div>
+                        <p>Subtotal: ${item.price * item.quantity}</p>
                     </div>
 
                     <button 
@@ -71,6 +79,12 @@ const CartPage = () => {
             ))}
 
             <h3>Total: ${total}</h3>
+
+            {state.items.length > 0 && (
+                <button onClick={() => dispatch({ type: 'CLEAR_CART' })}>
+                    Vaciar carrito
+                </button>
+            )}
 
             <button
               style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
