@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
 const CartPage = () => {
     const { state, dispatch } = useCart();
+    const navigate = useNavigate();
 
     console.log('STATE LEÍDO POR CARTPAGE', state.items);
     console.log('LONGITUD DEL CARRITO', state.items.length);
@@ -88,7 +90,7 @@ const CartPage = () => {
 
             <button
               style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
-              onClick={() => alert('Checkout proximo paso')}
+              onClick={() => navigate('/checkout')}
             >
                 Finalizar compra
             </button>
