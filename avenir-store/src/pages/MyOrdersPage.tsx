@@ -23,6 +23,40 @@ const MyOrdersPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [cancellingOrderId, setCancellingOrderId] = useState<string | null>(null);
+
+    const handleCancelOrder = async (orderId: string) => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            setError('No hay una sesión activa.');
+            return;
+        }
+
+        setCancellingOrderId(orderId);
+
+        try {
+            const response = await api.patch<Order>(
+                `/orders/${orderId}/cancel`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            setOrders(prevOrders =>
+                prevOrders.map(order =>
+                    order._id === orderId ? { ...order, status: response.data.status } : order
+                )
+            );
+        } catch {
+            setError('No se pudo cancelar el pedido.');
+        } finally {
+            setCancellingOrderId(null);
+        }
+    };
 
     useEffect(() => {
         const loadOrders = async () => {
@@ -123,6 +157,17 @@ const MyOrdersPage = () => {
                     <p>
                         <strong>Total de la orden:</strong> ${order.total}
                     </p>
+
+                    {order.status === 'pending' && (
+                        <button
+                            type="button"
+                            onClick={() => void handleCancelOrder(order._id)}
+                            disabled={cancellingOrderId === order._id}
+                            style={{ marginTop: '0.5rem' }}
+                        >
+                            {cancellingOrderId === order._id ? 'Cancelando...' : 'Cancelar pedido'}
+                        </button>
+                    )}
                 </div>
             ))}
         </div>

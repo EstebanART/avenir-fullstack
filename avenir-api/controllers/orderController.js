@@ -1,6 +1,38 @@
 const Order = require('../models/orderModel');
 const Product = require('../models/productModel');
 
+const cancelOrder = async (req, res) => {
+    try {
+        const order = await Order.findOne({
+            _id: req.params.id,
+            user: req.user._id
+        });
+
+        if (!order) {
+            return res.status(404).json({ message: 'pedido no encontrado' });
+        }
+
+        if (order.status !== 'pending') {
+            return res.status(400).json({ message: 'el pedido no puede cancelarse' });
+        }
+
+        for (const item of order.products) {
+            await Product.findOneAndUpdate(
+                { _id: item.product },
+                { $inc: { stock: item.quantity } },
+                { new: true }
+            );
+        }
+
+        order.status = 'cancelled';
+        await order.save();
+
+        res.json(order);
+    } catch (error) {
+        res.status(500).json({ message: 'error al cancelar pedido' });
+    }
+};
+
 // crear pedido
 const createOrder = async (req, res) => {
     try {
@@ -76,4 +108,4 @@ const getMyOrders = async (req, res ) => {
     }
 };
 
-module.exports = { createOrder, getMyOrders };
+module.exports = { createOrder, getMyOrders, cancelOrder };
