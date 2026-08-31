@@ -30,6 +30,16 @@ const createOrder = async (req, res) => {
                 return res.status(400).json({ message: 'stock insuficiente' });
             }
 
+            const updatedProduct = await Product.findOneAndUpdate(
+                { _id: productId, stock: { $gte: quantity } },
+                { $inc: { stock: -quantity } },
+                { new: true }
+            );
+
+            if (!updatedProduct) {
+                return res.status(400).json({ message: 'stock insuficiente' });
+            }
+
             processedProducts.push({
                 product: product._id,
                 name: product.name,
