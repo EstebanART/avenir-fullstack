@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const connectDB = require('./config/db');
 require('dotenv').config();
 
@@ -14,8 +15,9 @@ connectDB();
 
 
 // MiddLeware
+app.use(helmet());
 app.use(cors({
-  origin: 'http://localhost:5173' // puerto de Vite por defecto
+  origin: process.env.FRONTEND_URL
 }));
 app.use(express.json());
 
